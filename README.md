@@ -28,7 +28,8 @@ INSTALLED_APPS = (
 #### Step 3: Use the templatetag
 
 ```html
-{% block inlinecss "css/extra-padding.css" %}
+{% load inlinecss %}
+{% inlinecss "css/extra-padding.css" %}
     <html>
         <body>
             <div class='lots-o-padding'>
