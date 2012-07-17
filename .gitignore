@@ -1,0 +1,5 @@
+*.sqlite3
+*.sqlit3-journal
+*.pyc
+*.swp
+*.swo
