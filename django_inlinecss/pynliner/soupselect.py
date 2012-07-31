@@ -125,11 +125,12 @@ def select(soup, selector):
             #
             # Get pseudo classes from token
             #
-            for pseudo_class_regex in pseudo_classes_regexes:
-                match = pseudo_class_regex.search(token)
-                if match:
-                    checker_functions.append(
-                        get_pseudo_class_checker(match.groups(1)[0]))
+            for pseudo_class in re.findall(':([-\w]+)', token):
+                checker = get_pseudo_class_checker(pseudo_class)
+                if checker is None:
+                    raise Exception('Pseudoclass %s invalid or unsupported' % (
+                        pseudo_class,))
+                checker_functions.append(checker)
 
             checker = get_checker(checker_functions)
             #
