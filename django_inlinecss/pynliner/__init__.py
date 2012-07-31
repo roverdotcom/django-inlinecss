@@ -22,6 +22,7 @@ import cssutils
 from BeautifulSoup import BeautifulSoup
 from soupselect import select
 
+
 class Pynliner(object):
     """Pynliner class"""
 

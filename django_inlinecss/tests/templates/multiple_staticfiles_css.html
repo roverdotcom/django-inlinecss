@@ -1,0 +1,13 @@
+{% load inlinecss %}
+{% inlinecss "foo.css" "bar.css" %}
+<html>
+    <body>
+        <div class="foo">
+            This is the "foo" div.
+        </div>
+        <div class="bar">
+            This is the "bar" div.
+        </div>
+    </body>
+</html>
+{% endinlinecss %}

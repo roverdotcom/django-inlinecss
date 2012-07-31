@@ -52,6 +52,11 @@ INSTALLED_APPS = (
 </html>
 ```
 
+## Requirements
+
+- BeautifulSoup
+- cssutils
+
 ## Acknowledgements
 
 Thanks to Tanner Netterville for his efforts on [Pynliner](https://github.com/rennat/pynliner).

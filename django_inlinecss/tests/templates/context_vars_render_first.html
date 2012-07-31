@@ -1,0 +1,13 @@
+{% load inlinecss %}
+{% inlinecss "foobar.css" %}
+<html>
+    <body>
+        {{ foo_div_open_tag }}
+            This is the "foo" div.
+        </div>
+        {{ bar_div_open_tag }}
+            This is the "bar" div.
+        </div>
+    </body>
+</html>
+{% endinlinecss %}
