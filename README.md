@@ -12,6 +12,8 @@ template language.
 
 - BeautifulSoup
 - cssutils
+- Python 2.7 (for tests anyway)
+- Django 1.3 (relies on contrib.staticfiles)
 
 #### Step 2: Install django_inlinecss
 
@@ -29,6 +31,9 @@ INSTALLED_APPS = (
 ```
 
 #### Step 3: Use the templatetag
+
+1. Place your CSS file somewhere staticfiles can find it
+2. Create your template:
 
 ```html
 {% load inlinecss %}
