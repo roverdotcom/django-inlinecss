@@ -10,6 +10,9 @@ template language.
 
 #### Step 1: Dependencies
 
+- BeautifulSoup
+- cssutils
+
 #### Step 2: Install django_inlinecss
 
 Add ```django_inlinecss``` to your ```settings.py```:
@@ -45,17 +48,12 @@ INSTALLED_APPS = (
 ```html
 <html>
     <body>
-        <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;">
+        <div style="padding-left: 10px; padding-right: 10px; padding-top: 10px;" class="lots-o-padding">
             Something in need of styling.
         </div>
     </body>
 </html>
 ```
-
-## Requirements
-
-- BeautifulSoup
-- cssutils
 
 ## Acknowledgements
 
