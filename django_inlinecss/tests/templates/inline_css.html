@@ -1,0 +1,23 @@
+{% load inlinecss %}
+{% inlinecss %}
+<html>
+    <head>
+        <style type="text/css">
+            div.foo {
+                margin: 10px 15px 20px 25px;
+            }
+            div.bar {
+                padding: 10px 15px 20px 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="foo">
+            This is the "foo" div.
+        </div>
+        <div class="bar">
+            This is the "bar" div.
+        </div>
+    </body>
+</html>
+{% endinlinecss %}
