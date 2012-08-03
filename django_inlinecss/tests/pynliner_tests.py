@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import unittest
+import warnings
 import StringIO
 import logging
 import cssutils
@@ -295,7 +296,14 @@ class ComplexSelectors(unittest.TestCase):
         css = """h1 > span:css4-selector { color: red; }"""
         expected = u"""<h1><span>Hello World!</span><p>foo</p><div class="barclass"><span>baz</span>bar</div></h1>"""
         pynliner_instance = Pynliner().from_string(html).with_cssString(css)
-        self.assertRaises(Exception, pynliner_instance.run)
+        with warnings.catch_warnings(record=True) as warning:
+            output = pynliner_instance.run()
+            self.assertEqual(
+                warning[0].message.message,
+                'Pseudoclass :css4-selector invalid or unsupported')
+        self.assertEqual(
+            output,
+            expected)
 
     def test_child_follow_by_adjacent_selector_complex_dom(self):
         html = """<h1><span>Hello World!</span><p>foo</p><div class="barclass"><span>baz</span>bar</div></h1>"""
@@ -402,6 +410,26 @@ class ComplexSelectors(unittest.TestCase):
         css = """h1 :first-child { color: red; }"""
         expected = u"""<h1><div style="color: red"><span style="color: red">Hello World!</span></div><p>foo</p><div class="barclass"><span style="color: red">baz</span>bar</div></h1>"""
         output = Pynliner().from_string(html).with_cssString(css).run()
+        self.assertEqual(output, expected)
+
+    def test_hover_pseudo_selector(self):
+        """
+        :hover pseudo-selector isn't valid in the context of inline CSS
+        so we can't possible support it. However we can raise a
+        RuntimeWarning.
+
+        (In the scenario where the CSS is shared between normal pages &
+        CSS inlined pages, it may make sense to have things that can't
+        actually be used in the inlining step.)
+        """
+        html = """<h1><a href="/some-url/">Click Here</a></h1>"""
+        css = """a:hover { color: red; }"""
+        expected = """<h1><a href="/some-url/">Click here</a></h1>"""
+        with warnings.catch_warnings(record=True) as warning:
+            output = Pynliner().from_string(html).with_cssString(css).run()
+            self.assertEqual(
+                warning[0].message.message,
+                'Pseudoclass :hover invalid or unsupported')
         self.assertEqual(output, expected)
 
     def test_attribute_selector_match(self):

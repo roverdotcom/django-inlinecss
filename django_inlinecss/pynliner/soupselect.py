@@ -16,6 +16,7 @@ patched to support multiple class selectors here:
     http://code.google.com/p/soupselect/issues/detail?id=4#c0
 """
 import re
+import warnings
 import BeautifulSoup
 
 attribute_regex = re.compile('\[(?P<attribute>\w+)(?P<operator>[=~\|\^\$\*]?)=?["\']?(?P<value>[^\]"]*)["\']?\]')
@@ -128,9 +129,11 @@ def select(soup, selector):
             for pseudo_class in re.findall(':([-\w]+)', token):
                 checker = get_pseudo_class_checker(pseudo_class)
                 if checker is None:
-                    raise Exception('Pseudoclass %s invalid or unsupported' % (
-                        pseudo_class,))
-                checker_functions.append(checker)
+                    message = 'Pseudoclass :%s invalid or unsupported' % (
+                        pseudo_class,)
+                    warnings.warn(message, RuntimeWarning)
+                else:
+                    checker_functions.append(checker)
 
             checker = get_checker(checker_functions)
             #
