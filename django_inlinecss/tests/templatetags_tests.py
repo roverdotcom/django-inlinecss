@@ -112,3 +112,19 @@ class InlineCssTests(TestCase):
         template = get_template('template_inheritance.html')
         rendered = template.render(Context({}))
         self.assert_foo_and_bar_rendered(rendered)
+
+    def test_unicode_context_variables(self):
+        """
+        Test unicode values in the template do not break
+        template rendering.
+        """
+        template = get_template('unicode_context_variables.html')
+
+        rendered = template.render(Context({
+            'unicode_string': u'I love playing with my pi\xf1ata'}))
+        self.assertRegexpMatches(
+            rendered,
+            '<div class="bar" style="padding: 10px 15px 20px 25px">')
+        self.assertRegexpMatches(
+            rendered,
+            u'I love playing with my pi\xf1ata')

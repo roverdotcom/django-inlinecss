@@ -1,0 +1,13 @@
+{% load inlinecss %}
+{% inlinecss "foobar.css" %}
+    <html>
+        <body>
+            <div class="foo">
+                This is the "foo" div.
+            </div>
+            <div class="bar">
+                {{ unicode_string }}
+            </div>
+        </body>
+    </html>
+{% endinlinecss %}
