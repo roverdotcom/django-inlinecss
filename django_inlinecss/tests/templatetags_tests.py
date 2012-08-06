@@ -128,3 +128,25 @@ class InlineCssTests(TestCase):
         self.assertRegexpMatches(
             rendered,
             u'I love playing with my pi\xf1ata')
+
+    def test_comments_are_ignored(self):
+        """
+        Test that comments are ignored in the templatetag rendering
+        step.
+
+        With older BeautifulSoup the comments can be double escaped
+        leading to something like:
+            <!--<!-- Comment -->-->
+        """
+        template = get_template('comments_are_ignored.html')
+
+        rendered = template.render(Context({}))
+        self.assertRegexpMatches(
+            rendered,
+            '<body>\s+<!-- Here is comment one -->\s+<div')
+        self.assertRegexpMatches(
+            rendered,
+            'This is the "foo" div.\s+<!-- comment two -->\s+')
+        self.assertRegexpMatches(
+            rendered,
+            'This is the "bar" div.\s+<!-- comment three -->\s+')

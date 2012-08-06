@@ -467,6 +467,13 @@ class ComplexSelectors(unittest.TestCase):
         output = Pynliner().from_string(html).with_cssString(css).run()
         self.assertEqual(output, expected)
 
+    def test_html_comment_ignored(self):
+        html = """<div class="hi">Hello<!-- A comment --></div>"""
+        css = """div.hi { color: red; }"""
+        expected = """<div class="hi" style="color: red">Hello<!-- A comment --></div>"""
+        output = Pynliner().from_string(html).with_cssString(css).run()
+        self.assertEqual(output, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

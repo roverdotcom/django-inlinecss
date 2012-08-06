@@ -1,0 +1,16 @@
+{% load inlinecss %}
+    <html>
+    {% inlinecss "foobar.css" %}
+        <body>
+            <!-- Here is comment one -->
+            <div class="foo">
+                This is the "foo" div.
+                <!-- comment two -->
+            </div>
+            <div class="bar">
+                This is the "bar" div.
+                <!-- comment three -->
+            </div>
+        </body>
+    {% endinlinecss %}
+    </html>
