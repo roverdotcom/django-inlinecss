@@ -446,5 +446,27 @@ class ComplexSelectors(unittest.TestCase):
         output = Pynliner().from_string(html).with_cssString(css).run()
         self.assertEqual(output, expected)
 
+    def test_comma_separated_selectors(self):
+        html = """<a href="#">Click Here</a><p>Or here</p>"""
+        css = """a, p { color: red; }"""
+        expected = u"""<a href="#" style="color: red">Click Here</a><p style="color: red">Or here</p>"""
+        output = Pynliner().from_string(html).with_cssString(css).run()
+        self.assertEqual(output, expected)
+
+    def test_complex_comma_separated_selectors(self):
+        html = """<div><a class="hi" href="#">Hi</a></div><div><p class="hi">Hi</p></div>"""
+        css = """div > a.hi, div > p.hi { color: red; }"""
+        expected = u"""<div><a class="hi" href="#" style="color: red">Hi</a></div><div><p class="hi" style="color: red">Hi</p></div>"""
+        output = Pynliner().from_string(html).with_cssString(css).run()
+        self.assertEqual(output, expected)
+
+    def test_immediate_child_with_additional_child_selector(self):
+        html = """<div class="wrapper"><div class="header"><input type="text" /></div></div>"""
+        css = """.wrapper > .header input { color: red; }"""
+        expected = u"""<div class="wrapper"><div class="header"><input type="text" style="color: red" /></div></div>"""
+        output = Pynliner().from_string(html).with_cssString(css).run()
+        self.assertEqual(output, expected)
+
+
 if __name__ == '__main__':
     unittest.main()

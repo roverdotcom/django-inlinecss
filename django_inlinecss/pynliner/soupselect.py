@@ -228,9 +228,12 @@ def select(soup, selector):
             match = re.search('([>~+]+)$', selector)
             if match:
                 operator = match.groups(1)[0]
+                selector = selector.rsplit(operator, 1)[0].rstrip()
             else:
+                # In this case there may or may not be trailing whitespace
+                # to strip.
                 operator = ' '
-            selector = selector.rsplit(operator, 1)[0].rstrip()
+                selector = selector.rstrip()
     return [entry[0] for entry in current_context]
 
 
