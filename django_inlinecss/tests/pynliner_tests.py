@@ -422,7 +422,7 @@ class ComplexSelectors(unittest.TestCase):
         CSS inlined pages, it may make sense to have things that can't
         actually be used in the inlining step.)
         """
-        html = """<h1><a href="/some-url/">Click Here</a></h1>"""
+        html = """<h1><a href="/some-url/">Click here</a></h1>"""
         css = """a:hover { color: red; }"""
         expected = """<h1><a href="/some-url/">Click here</a></h1>"""
         with warnings.catch_warnings(record=True) as warning:

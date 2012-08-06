@@ -81,7 +81,7 @@ def get_pseudo_class_checker(psuedo_class):
     """
     return {
         'first-child': lambda el: is_first_content_node(el.previousSibling),
-        'last-child': lambda el: is_last_content_node(el.nextSibling)
+        'last-child': lambda el: is_last_content_node(el.nextSibling),
     }.get(psuedo_class)
 
 
@@ -132,6 +132,7 @@ def select(soup, selector):
                     message = 'Pseudoclass :%s invalid or unsupported' % (
                         pseudo_class,)
                     warnings.warn(message, RuntimeWarning)
+                    checker_functions.append(lambda el: False)
                 else:
                     checker_functions.append(checker)
 
