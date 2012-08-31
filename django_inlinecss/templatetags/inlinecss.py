@@ -3,7 +3,7 @@ from django import template
 from django.utils.encoding import smart_unicode
 from django.contrib.staticfiles.storage import staticfiles_storage
 
-from django_inlinecss import pynliner
+from django_inlinecss import conf
 
 register = template.Library()
 
@@ -25,9 +25,8 @@ class InlineCssNode(template.Node):
             with open(expanded_path) as css_file:
                 css = ''.join((css, css_file.read()))
 
-        inliner = pynliner.Pynliner().from_string(rendered_contents)
-        inliner = inliner.with_cssString(css)
-        return inliner.run()
+        engine = conf.get_engine()(html=rendered_contents, css=css)
+        return engine.render()
 
 
 @register.tag
