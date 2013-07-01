@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='django-inlinecss',
@@ -11,6 +11,7 @@ setup(
     license='BSD',
     url='https://github.com/stevejalim/django-inlinecss',
     download_url='https://github.com/stevejalim/django-inlinecss/downloads',
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     keywords=['html', 'css', 'inline', 'style', 'email'],
