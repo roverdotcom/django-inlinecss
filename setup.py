@@ -6,6 +6,7 @@ setup(
     description='A Django app useful for inlining CSS (primarily for e-mails)',
     long_description=open('README.md').read(),
     author='Philip Kimmey',
+    author_email='philip@rover.com',
     maintainer='Philip Kimmey',
     maintainer_email='philip@rover.com',
     license='BSD',
