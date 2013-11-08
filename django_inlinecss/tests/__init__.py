@@ -1,2 +1,2 @@
-from django_inlinecss.tests.templatetags_tests import *
-from django_inlinecss.tests.pynliner_tests import *
+from django_inlinecss.tests.test_templatetags import *
+from django_inlinecss.tests.test_pynliner import *
