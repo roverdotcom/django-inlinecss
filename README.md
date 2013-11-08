@@ -3,7 +3,7 @@
 Inlining CSS is necessary for email generation and sending
 but is currently a suprisingly large hassle.
 
-This library aims to make it a breeze for in the Django
+This library aims to make it a breeze in the Django
 template language.
 
 ## Usage

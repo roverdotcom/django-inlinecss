@@ -19,7 +19,8 @@ from django_inlinecss.tests.constants import TESTS_STATIC_DIR
 templates_override = settings.TEMPLATE_DIRS + (TESTS_TEMPLATE_DIR,)
 
 
-@override_settings(TEMPLATE_DIRS=templates_override,
+@override_settings(
+    TEMPLATE_DIRS=templates_override,
     STATIC_ROOT=TESTS_STATIC_DIR)
 class InlineCssTests(TestCase):
     def setUp(self):
@@ -150,3 +151,12 @@ class InlineCssTests(TestCase):
         self.assertRegexpMatches(
             rendered,
             'This is the "bar" div.\s+<!-- comment three -->\s+')
+
+
+class DebugModeStaticfilesTests(TestCase):
+    @override_settings(DEBUG=True)
+    def test_debug_mode_uses_staticfiles_finder(self):
+        raise NotImplementedError()
+
+    def test_non_debug_mode_uses_staticfiles_storage(self):
+        raise NotImplementedError()
