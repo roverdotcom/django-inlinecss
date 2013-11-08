@@ -3,3 +3,5 @@
 *.pyc
 *.swp
 *.swo
+dist/
+django_inlinecss.egg-info/
