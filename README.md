@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/roverdotcom/django-inlinecss.png?branch=master)](https://travis-ci.org/roverdotcom/django-inlinecss)
+
 ## About
 
 Inlining CSS is necessary for email generation and sending
