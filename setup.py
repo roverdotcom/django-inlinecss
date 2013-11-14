@@ -30,6 +30,7 @@ setup(
         'Django',
         'cssutils',
         'BeautifulSoup',
-        'mock'
+        'mock',
+        'six'
     ]
 )
