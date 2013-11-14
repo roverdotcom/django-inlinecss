@@ -63,7 +63,10 @@ class Basic(unittest.TestCase):
 
     def test_08_fromURL(self):
         """Test 'fromURL' constructor"""
-        return
+        if hasattr(unittest, 'SkipTest'):
+            raise unittest.SkipTest()
+        else:
+            return
         url = 'http://media.tannern.com/pynliner/test.html'
         p = Pynliner()
         p.from_url(url)
@@ -460,8 +463,12 @@ class ComplexSelectors(unittest.TestCase):
         output = Pynliner().from_string(html).with_cssString(css).run()
         self.assertEqual(output, expected)
 
-    @unittest.skip("No support for immediate child selector")
     def test_immediate_child_with_additional_child_selector(self):
+        if hasattr(unittest, 'SkipTest'):
+            raise unittest.SkipTest("No support yet for immediate child")
+        else:
+            return
+        return
         html = """<div class="wrapper"><div class="header"><input type="text" /></div></div>"""
         css = """.wrapper > .header input { color: red; }"""
         expected = u"""<div class="wrapper"><div class="header"><input type="text" style="color: red" /></div></div>"""
