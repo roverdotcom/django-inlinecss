@@ -10,11 +10,8 @@ env:
   - DJANGO_VERSION=1.6
 matrix:
   allow_failures:
-    - env: "DJANGO_VERSION=1.4"
-      python: 3.2
-    - env: "DJANGO_VERSION=1.4"
-      python: 3.3
-
+    - python: 3.2
+    - python: 3.3
 install:
   - pip install -q Django==$DJANGO_VERSION
   - python setup.py -q install
