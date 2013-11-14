@@ -14,8 +14,8 @@ template language.
 
 - BeautifulSoup
 - cssutils
-- Python 2.7 (for tests anyway)
-- Django 1.3 (relies on contrib.staticfiles)
+- Python 2.6+
+- Django 1.4+
 
 #### Step 2: Install django_inlinecss
 

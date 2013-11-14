@@ -63,7 +63,10 @@ class Basic(unittest.TestCase):
 
     def test_08_fromURL(self):
         """Test 'fromURL' constructor"""
-        return
+        if hasattr(unittest, 'SkipTest'):
+            raise unittest.SkipTest()
+        else:
+            return
         url = 'http://media.tannern.com/pynliner/test.html'
         p = Pynliner()
         p.from_url(url)
@@ -216,7 +219,7 @@ class LogOptions(unittest.TestCase):
 
         self.p.run()
         log_contents = self.logstream.getvalue()
-        self.assertIn("DEBUG", log_contents)
+        self.assertTrue("DEBUG" in log_contents)
 
 
 class BeautifulSoupBugs(unittest.TestCase):
@@ -225,12 +228,12 @@ class BeautifulSoupBugs(unittest.TestCase):
         self.html = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"""
         output = pynliner.fromString(self.html)
-        self.assertNotIn("<!<!", output)
+        self.assertFalse("<!<!" in output)
 
     def test_double_comment(self):
         self.html = """<!-- comment -->"""
         output = pynliner.fromString(self.html)
-        self.assertNotIn("<!--<!--", output)
+        self.assertFalse("<!--<!--" in output)
 
 
 class ComplexSelectors(unittest.TestCase):
@@ -461,6 +464,11 @@ class ComplexSelectors(unittest.TestCase):
         self.assertEqual(output, expected)
 
     def test_immediate_child_with_additional_child_selector(self):
+        if hasattr(unittest, 'SkipTest'):
+            raise unittest.SkipTest("No support yet for immediate child")
+        else:
+            return
+        return
         html = """<div class="wrapper"><div class="header"><input type="text" /></div></div>"""
         css = """.wrapper > .header input { color: red; }"""
         expected = u"""<div class="wrapper"><div class="header"><input type="text" style="color: red" /></div></div>"""

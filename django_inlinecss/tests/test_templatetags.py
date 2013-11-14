@@ -4,6 +4,8 @@ Test the functioning of the templatetag itself.
 The actual CSS inlining displayed here is extremely simple:
 tests of the CSS selector functionality is independent.
 """
+import os
+
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.conf import settings
@@ -11,6 +13,8 @@ from django.utils.safestring import mark_safe
 
 from django.template import Context
 from django.template.loader import get_template
+
+from mock import patch
 
 from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
 from django_inlinecss.tests.constants import TESTS_STATIC_DIR
@@ -153,10 +157,23 @@ class InlineCssTests(TestCase):
             'This is the "bar" div.\s+<!-- comment three -->\s+')
 
 
+@override_settings(
+    TEMPLATE_DIRS=templates_override,
+    STATIC_ROOT=TESTS_STATIC_DIR)
 class DebugModeStaticfilesTests(TestCase):
     @override_settings(DEBUG=True)
-    def test_debug_mode_uses_staticfiles_finder(self):
-        raise NotImplementedError()
+    @patch('django.contrib.staticfiles.finders.find')
+    def test_debug_mode_uses_staticfiles_finder(self, find):
+        full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
+        find.return_value = full_path
+        template = get_template('single_staticfiles_css.html')
+        template.render(Context({}))
+        find.assert_called_once_with("foobar.css")
 
-    def test_non_debug_mode_uses_staticfiles_storage(self):
-        raise NotImplementedError()
+    @patch('django.contrib.staticfiles.storage.staticfiles_storage.path')
+    def test_non_debug_mode_uses_staticfiles_storage(self, path):
+        full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
+        path.return_value = full_path
+        template = get_template('single_staticfiles_css.html')
+        template.render(Context({}))
+        path.assert_called_once_with("foobar.css")

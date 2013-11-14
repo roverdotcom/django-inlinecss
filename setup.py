@@ -29,6 +29,7 @@ setup(
     install_requires=[
         'Django',
         'cssutils',
-        'BeautifulSoup'
+        'BeautifulSoup',
+        'mock'
     ]
 )

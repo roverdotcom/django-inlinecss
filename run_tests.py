@@ -6,12 +6,13 @@
 # from http://www.travisswicegood.com/2010/01/17/
 #           django-virtualenv-pip-and-fabric/
 import os
+import sys
 
 from django.conf import settings
 from django.core.management import call_command
 
-APP_ROOT = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'django_inlinecss')
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PROJECT_ROOT)
 
 
 def main():
