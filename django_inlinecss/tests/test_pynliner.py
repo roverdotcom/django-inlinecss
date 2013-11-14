@@ -4,6 +4,7 @@ import warnings
 import StringIO
 import logging
 import cssutils
+from six import u
 
 from django_inlinecss import pynliner
 from django_inlinecss.pynliner import Pynliner
@@ -27,8 +28,8 @@ class Basic(unittest.TestCase):
         """Test '_get_styles' method"""
         self.p._get_soup()
         self.p._get_styles()
-        self.assertEqual(self.p.style_string, u'h1 { color:#ffcc00; }\n')
-        self.assertEqual(unicode(self.p.soup), u'<h1>Hello World!</h1>')
+        self.assertEqual(self.p.style_string, u('h1 { color:#ffcc00; }\n'))
+        self.assertEqual(unicode(self.p.soup), u('<h1>Hello World!</h1>'))
 
     def test_04_apply_styles(self):
         """Test '_apply_styles' method"""
@@ -37,12 +38,14 @@ class Basic(unittest.TestCase):
         self.p._apply_styles()
         self.assertEqual(
             unicode(self.p.soup),
-            u'<h1 style="color: #fc0">Hello World!</h1>')
+            u('<h1 style="color: #fc0">Hello World!</h1>'))
 
     def test_05_run(self):
         """Test 'run' method"""
         output = self.p.run()
-        self.assertEqual(output, u'<h1 style="color: #fc0">Hello World!</h1>')
+        self.assertEqual(
+            output,
+            u('<h1 style="color: #fc0">Hello World!</h1>'))
 
     def test_06_with_cssString(self):
         """Test 'with_cssString' method"""
@@ -53,12 +56,12 @@ class Basic(unittest.TestCase):
         output = self.p.run()
         self.assertEqual(
             output,
-            u'<h1 style="font-size: 2em; color: #fc0">Hello World!</h1>')
+            u('<h1 style="font-size: 2em; color: #fc0">Hello World!</h1>'))
 
     def test_07_fromString(self):
         """Test 'fromString' complete"""
         output = pynliner.fromString(self.html)
-        desired = u'<h1 style="color: #fc0">Hello World!</h1>'
+        desired = u('<h1 style="color: #fc0">Hello World!</h1>')
         self.assertEqual(output, desired)
 
     def test_08_fromURL(self):
@@ -86,7 +89,7 @@ class Basic(unittest.TestCase):
         p._get_styles()
 
         output = p.run()
-        desired = u"""<?xml version='1.0' encoding='utf-8'?>
+        desired = u("""<?xml version='1.0' encoding='utf-8'?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>test</title>
@@ -98,7 +101,7 @@ class Basic(unittest.TestCase):
 <p style="color: #999">Possim tincidunt putamus iriure eu nulla. Facer qui volutpat ut aliquam sequitur. Mutationem legere feugiat autem clari notare. Nulla typi augue suscipit lectores in.</p>
 <p style="color: #999">Facilisis claritatem eum decima dignissim legentis. Nulla per legentis odio molestie quarta. Et velit typi claritas ipsum ullamcorper.</p>
 </body>
-</html>"""
+</html>""")
         self.assertEqual(output, desired)
 
     def test_09_overloadedStyles(self):
@@ -133,10 +136,10 @@ class CommaSelector(unittest.TestCase):
         self.p._get_styles()
         self.assertEqual(
             self.p.style_string,
-            u'.b1,.b2 { font-weight:bold; } .c {color: red}\n')
+            u('.b1,.b2 { font-weight:bold; } .c {color: red}\n'))
         self.assertEqual(
             unicode(self.p.soup),
-            u'<span class="b1">Bold</span><span class="b2 c">Bold Red</span>')
+            u('<span class="b1">Bold</span><span class="b2 c">Bold Red</span>'))
 
     def test_04_apply_styles(self):
         """Test '_apply_styles' method"""
@@ -154,7 +157,9 @@ class CommaSelector(unittest.TestCase):
     def test_05_run(self):
         """Test 'run' method"""
         output = self.p.run()
-        self.assertEqual(output, u'<span class="b1" style="font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-weight: bold">Bold Red</span>')
+        self.assertEqual(
+            output,
+            u('<span class="b1" style="font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-weight: bold">Bold Red</span>'))
 
     def test_06_with_cssString(self):
         """Test 'with_cssString' method"""
@@ -163,12 +168,14 @@ class CommaSelector(unittest.TestCase):
         self.assertEqual(self.p.style_string, cssString + '\n')
 
         output = self.p.run()
-        self.assertEqual(output, u'<span class="b1" style="font-size: 2em; font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-size: 2em; font-weight: bold">Bold Red</span>')
+        self.assertEqual(
+            output,
+            u('<span class="b1" style="font-size: 2em; font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-size: 2em; font-weight: bold">Bold Red</span>'))
 
     def test_07_fromString(self):
         """Test 'fromString' complete"""
         output = pynliner.fromString(self.html)
-        desired = u'<span class="b1" style="font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-weight: bold">Bold Red</span>'
+        desired = u('<span class="b1" style="font-weight: bold">Bold</span><span class="b2 c" style="color: red; font-weight: bold">Bold Red</span>')
         self.assertEqual(output, desired)
 
     def test_08_comma_whitespace(self):

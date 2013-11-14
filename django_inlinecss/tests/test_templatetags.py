@@ -15,6 +15,7 @@ from django.template import Context
 from django.template.loader import get_template
 
 from mock import patch
+from six import u
 
 from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
 from django_inlinecss.tests.constants import TESTS_STATIC_DIR
@@ -126,13 +127,13 @@ class InlineCssTests(TestCase):
         template = get_template('unicode_context_variables.html')
 
         rendered = template.render(Context({
-            'unicode_string': u'I love playing with my pi\xf1ata'}))
+            'unicode_string': u('I love playing with my pi\xf1ata')}))
         self.assertRegexpMatches(
             rendered,
             '<div class="bar" style="padding: 10px 15px 20px 25px">')
         self.assertRegexpMatches(
             rendered,
-            u'I love playing with my pi\xf1ata')
+            u('I love playing with my pi\xf1ata'))
 
     def test_comments_are_ignored(self):
         """
