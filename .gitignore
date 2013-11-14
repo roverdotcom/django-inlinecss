@@ -5,3 +5,5 @@
 *.swo
 dist/
 django_inlinecss.egg-info/
+venv/
+build/
