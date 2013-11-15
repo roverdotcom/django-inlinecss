@@ -14,13 +14,14 @@ The generated output of this software shall not be used in a mass marketing serv
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
-
 __version__ = "0.4.0"
 
 import urllib2
 import cssutils
 from BeautifulSoup import BeautifulSoup
 from soupselect import select
+
+from six import u
 
 
 class Pynliner(object):
@@ -78,9 +79,9 @@ class Pynliner(object):
         <pynliner.Pynliner object at 0x2ca810>
         """
         if not self.style_string:
-            self.style_string = cssString + u'\n'
+            self.style_string = cssString + u('\n')
         else:
-            self.style_string += cssString + u'\n'
+            self.style_string += cssString + u('\n')
         return self
 
     def run(self):
@@ -126,9 +127,9 @@ class Pynliner(object):
         """Gets <link> element styles
         """
         if not self.style_string:
-            self.style_string = u''
+            self.style_string = u('')
         else:
-            self.style_string += u'\n'
+            self.style_string += u('\n')
 
         link_tags = self.soup.findAll('link', {'rel': 'stylesheet'})
         for tag in link_tags:
@@ -146,13 +147,13 @@ class Pynliner(object):
         """Gets <style> element styles
         """
         if not self.style_string:
-            self.style_string = u''
+            self.style_string = u('')
         else:
-            self.style_string += u'\n'
+            self.style_string += u('\n')
 
         style_tags = self.soup.findAll('style')
         for tag in style_tags:
-            self.style_string += u'\n'.join(tag.contents) + u'\n'
+            self.style_string += u('\n').join(tag.contents) + u('\n')
             tag.extract()
 
     def _get_specificity_from_list(self, lst):
@@ -205,11 +206,10 @@ class Pynliner(object):
                 for prop in prop_list:
                     elem_style_map[elem][prop.name] = prop.value
 
-
         # apply rules to elements
         for elem, style_declaration in elem_style_map.items():
-            if elem.has_key('style'):
-                elem['style'] = u'%s; %s' % (style_declaration.cssText.replace('\n', ' '), elem['style'])
+            if 'style' in elem:
+                elem['style'] = u('%s; %s') % (style_declaration.cssText.replace('\n', ' '), elem['style'])
             else:
                 elem['style'] = style_declaration.cssText.replace('\n', ' ')
 
@@ -221,6 +221,7 @@ class Pynliner(object):
         self.output = unicode(self.soup)
         return self.output
 
+
 def fromURL(url, log=None):
     """Shortcut Pynliner constructor. Equivelent to:
 
@@ -229,6 +230,7 @@ def fromURL(url, log=None):
     Returns processed HTML string.
     """
     return Pynliner(log).from_url(url).run()
+
 
 def fromString(string, log=None):
     """Shortcut Pynliner constructor. Equivelent to:
