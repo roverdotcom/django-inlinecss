@@ -152,6 +152,8 @@ class Pynliner(object):
 
         style_tags = self.soup.findAll('style')
         for tag in style_tags:
+            if tag.get('data-noinline') == 'true':
+                continue
             self.style_string += u'\n'.join(tag.contents) + u'\n'
             tag.extract()
 
