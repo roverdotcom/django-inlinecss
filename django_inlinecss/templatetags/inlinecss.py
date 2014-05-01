@@ -28,7 +28,7 @@ class InlineCssNode(template.Node):
             else:
                 expanded_path = staticfiles_storage.path(path)
 
-            if expanded_path is None:
+            if staticfiles_storage.exists(expanded_path) is False:
                 #
                 # not found in static, try in default_storage
                 #
