@@ -16,12 +16,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 """
 __version__ = "0.4.0"
 
-import urllib2
+from six.moves.urllib.request import urlopen
 import cssutils
-from BeautifulSoup import BeautifulSoup
-from soupselect import select
+from bs4 import BeautifulSoup
+from .soupselect import select
 
 from six import u
+from six import text_type
 
 
 class Pynliner(object):
@@ -104,7 +105,7 @@ class Pynliner(object):
     def _get_url(self, url):
         """Returns the response content from the given url
         """
-        return urllib2.urlopen(url).read()
+        return urlopen(url).read()
 
     def _get_soup(self):
         """Convert source string to BeautifulSoup object. Sets it to self.soup.
@@ -218,7 +219,7 @@ class Pynliner(object):
 
         Returns self.output
         """
-        self.output = unicode(self.soup)
+        self.output = text_type(self.soup)
         return self.output
 
 

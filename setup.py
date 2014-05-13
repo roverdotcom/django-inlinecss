@@ -29,8 +29,12 @@ setup(
     install_requires=[
         'Django',
         'cssutils',
-        'BeautifulSoup',
+        'beautifulsoup4',
+        'six',
+        ],
+    tests_require=[
         'mock',
-        'six'
-    ]
+        'six',
+        ],
+    test_suite="run_tests.main",
 )

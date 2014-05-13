@@ -17,7 +17,7 @@ patched to support multiple class selectors here:
 """
 import re
 import warnings
-import BeautifulSoup
+import bs4 as BeautifulSoup
 
 attribute_regex = re.compile('\[(?P<attribute>\w+)(?P<operator>[=~\|\^\$\*]?)=?["\']?(?P<value>[^\]"]*)["\']?\]')
 pseudo_classes_regexes = (
@@ -243,11 +243,11 @@ def monkeypatch(BeautifulSoupClass=None):
     common import location for BeautifulSoup.
     """
     if not BeautifulSoupClass:
-        from BeautifulSoup import BeautifulSoup as BeautifulSoupClass
+        from bs4 import BeautifulSoup as BeautifulSoupClass
     BeautifulSoupClass.findSelect = select
 
 
 def unmonkeypatch(BeautifulSoupClass=None):
     if not BeautifulSoupClass:
-        from BeautifulSoup import BeautifulSoup as BeautifulSoupClass
+        from bs4 import BeautifulSoup as BeautifulSoupClass
     delattr(BeautifulSoupClass, 'findSelect')

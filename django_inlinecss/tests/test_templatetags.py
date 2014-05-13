@@ -14,7 +14,10 @@ from django.utils.safestring import mark_safe
 from django.template import Context
 from django.template.loader import get_template
 
-from mock import patch
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 from six import u
 
 from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
