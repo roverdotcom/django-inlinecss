@@ -12,19 +12,13 @@ select(soup, 'div')
 select(soup, 'div#main ul a')
     - returns a list of links inside a ul inside div#main
 
-patched to support multiple class selectors here:
-    http://code.google.com/p/soupselect/issues/detail?id=4#c0
+patched to support multiple class selectors here http://code.google.com/p/soupselect/issues/detail?id=4#c0
 """
 import re
-import warnings
 import BeautifulSoup
 
 attribute_regex = re.compile('\[(?P<attribute>\w+)(?P<operator>[=~\|\^\$\*]?)=?["\']?(?P<value>[^\]"]*)["\']?\]')
-pseudo_classes_regexes = (
-    re.compile(':(first-child)'),
-    re.compile(':(last-child)')
-)
-
+pseudo_class_regex = re.compile(ur':(([^:.#(*\[]|\([^)]+\))+)')
 
 def get_attribute_checker(operator, attribute, value=''):
     """
@@ -42,10 +36,9 @@ def get_attribute_checker(operator, attribute, value=''):
         # attribute contains value
         '*': lambda el: value in el.get(attribute, ''),
         # attribute is either exactly value or starts with value-
-        '|': lambda el: (el.get(attribute, '') == value or
-            el.get(attribute, '').startswith('%s-' % value)),
-    }.get(operator, lambda el: attribute in el)
-
+        '|': lambda el: el.get(attribute, '') == value \
+            or el.get(attribute, '').startswith('%s-' % value),
+    }.get(operator, lambda el: el.has_key(attribute))
 
 def is_white_space(el):
     if isinstance(el, BeautifulSoup.NavigableString) and str(el).strip() == '':
@@ -53,7 +46,6 @@ def is_white_space(el):
     if isinstance(el, BeautifulSoup.Comment):
         return True
     return False
-
 
 def is_last_content_node(el):
     result = False
@@ -63,7 +55,6 @@ def is_last_content_node(el):
         result = is_last_content_node(el.nextSibling)
     return result
 
-
 def is_first_content_node(el):
     result = False
     if el is None:
@@ -72,7 +63,6 @@ def is_first_content_node(el):
         result = is_first_content_node(el.previousSibling)
     return result
 
-
 def get_pseudo_class_checker(psuedo_class):
     """
     Takes a psuedo_class, like "first-child" or "last-child"
@@ -80,10 +70,9 @@ def get_pseudo_class_checker(psuedo_class):
     that psuedo class
     """
     return {
-        'first-child': lambda el: is_first_content_node(el.previousSibling),
-        'last-child': lambda el: is_last_content_node(el.nextSibling),
-    }.get(psuedo_class)
-
+        'first-child': lambda el: is_first_content_node(getattr(el, 'previousSibling', None)),
+        'last-child': lambda el: is_last_content_node(getattr(el, 'nextSibling', None))
+    }.get(psuedo_class, lambda el: False)
 
 def get_checker(functions):
     def checker(el):
@@ -96,7 +85,7 @@ def get_checker(functions):
 
 def select(soup, selector):
     """
-    soup should be a BeautifulSoup instance; selector is a CSS selector
+    soup should be a BeautifulSoup instance; selector is a CSS selector 
     specifying the elements you want to retrieve.
     """
     handle_token = True
@@ -113,28 +102,20 @@ def select(soup, selector):
 
             # remove this token from the selector
             selector = selector.rsplit(token, 1)[0].rstrip()
-
+            
             checker_functions = []
             #
             # Get attribute selectors from token
             #
             matches = attribute_regex.findall(token)
             for match in matches:
-                checker_functions.append(
-                    get_attribute_checker(match[1], match[0], match[2]))
+                checker_functions.append(get_attribute_checker(match[1], match[0], match[2]))
 
             #
             # Get pseudo classes from token
             #
-            for pseudo_class in re.findall(':([-\w]+)', token):
-                checker = get_pseudo_class_checker(pseudo_class)
-                if checker is None:
-                    message = 'Pseudoclass :%s invalid or unsupported' % (
-                        pseudo_class,)
-                    warnings.warn(message, RuntimeWarning)
-                    checker_functions.append(lambda el: False)
-                else:
-                    checker_functions.append(checker)
+            for match in pseudo_class_regex.finditer(token):
+                checker_functions.append(get_pseudo_class_checker(match.groups(1)[0]))
 
             checker = get_checker(checker_functions)
             #
@@ -205,8 +186,8 @@ def select(soup, selector):
                         )
             elif operator == '~':
                 # for each context in current_context
-                # check
-                raise NotImplementedError("~ operator is not implemented.")
+                # check 
+                raise NotImplementedError("~ operator is not implemented. Sad face :(")
             elif operator == '+':
                 # for each context in current_context
                 # check if the preceding sibling satisfies the
@@ -228,24 +209,19 @@ def select(soup, selector):
             match = re.search('([>~+]+)$', selector)
             if match:
                 operator = match.groups(1)[0]
-                selector = selector.rsplit(operator, 1)[0].rstrip()
             else:
-                # In this case there may or may not be trailing whitespace
-                # to strip.
                 operator = ' '
-                selector = selector.rstrip()
+            selector = selector.rsplit(operator, 1)[0].rstrip()
     return [entry[0] for entry in current_context]
-
 
 def monkeypatch(BeautifulSoupClass=None):
     """
-    If you don't explicitly state the class to patch, defaults to the most
+    If you don't explicitly state the class to patch, defaults to the most 
     common import location for BeautifulSoup.
     """
     if not BeautifulSoupClass:
         from BeautifulSoup import BeautifulSoup as BeautifulSoupClass
     BeautifulSoupClass.findSelect = select
-
 
 def unmonkeypatch(BeautifulSoupClass=None):
     if not BeautifulSoupClass:
