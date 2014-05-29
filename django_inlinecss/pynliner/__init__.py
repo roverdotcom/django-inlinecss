@@ -30,13 +30,11 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
 
-__version__ = "0.5.1"
+__version__ = "0.5.0"
 
-import re
-import urlparse
 import urllib2
 import cssutils
-from BeautifulSoup import BeautifulSoup, Comment
+from BeautifulSoup import BeautifulSoup
 from soupselect import select
 
 
@@ -48,13 +46,10 @@ class Pynliner(object):
     stylesheet = False
     output = False
 
-    def __init__(self, log=None, allow_conditional_comments=False):
+    def __init__(self, log=None):
         self.log = log
         cssutils.log.enabled = False if log is None else True
         self.extra_style_strings = []
-        self.allow_conditional_comments = allow_conditional_comments
-        self.root_url = None
-        self.relative_url = None
 
     def from_url(self, url):
         """Gets remote HTML page for conversion
@@ -116,9 +111,7 @@ class Pynliner(object):
         if not self.stylesheet:
             self._get_styles()
         self._apply_styles()
-        self._get_output()
-        self._clean_output()
-        return self.output
+        return self._get_output()
 
     def _get_url(self, url):
         """Returns the response content from the given url
@@ -163,11 +156,12 @@ class Pynliner(object):
         link_tags = self.soup.findAll('link', {'rel': 'stylesheet'})
         for tag in link_tags:
             url = tag['href']
-
-            # Convert the relative URL to an absolute URL ready to pass to urllib
-            base_url = self.relative_url or self.root_url
-            url = urlparse.urljoin(base_url, url)
-
+            if url.startswith('http://'):
+                pass
+            elif url.startswith('/'):
+                url = self.root_url + url
+            else:
+                url = self.relative_url + url
             self.style_string += self._get_url(url)
             tag.extract()
 
@@ -232,8 +226,7 @@ class Pynliner(object):
             # for each prop_list, apply to CSSStyleDeclaration
             for prop_list in map(lambda obj: obj['props'], props):
                 for prop in prop_list:
-                    elem_style_map[elem].removeProperty(prop.name)
-                    elem_style_map[elem].setProperty(prop.name, prop.value)
+                    elem_style_map[elem][prop.name] = prop.value
 
 
         # apply rules to elements
@@ -242,7 +235,7 @@ class Pynliner(object):
                 elem['style'] = u'%s; %s' % (style_declaration.cssText.replace('\n', ' '), elem['style'])
             else:
                 elem['style'] = style_declaration.cssText.replace('\n', ' ')
-        
+
     def _get_output(self):
         """Generate Unicode string of `self.soup` and set it to `self.output`
 
@@ -250,19 +243,6 @@ class Pynliner(object):
         """
         self.output = unicode(self.soup)
         return self.output
-    
-    def _clean_output(self):
-        """Clean up after BeautifulSoup's output.
-        """
-        if self.allow_conditional_comments:
-            matches = re.finditer('(<!--\[if .+\].+?&lt;!\[endif\]-->)', self.output)
-            for match in matches:
-                comment = match.group()
-                comment = comment.replace('&gt;', '>')
-                comment = comment.replace('&lt;', '<')
-                self.output = (self.output[:match.start()] + comment +
-                               self.output[match.end():])
-
 
 def fromURL(url, log=None):
     """Shortcut Pynliner constructor. Equivalent to:
