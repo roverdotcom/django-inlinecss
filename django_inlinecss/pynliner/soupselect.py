@@ -18,7 +18,10 @@ import re
 import BeautifulSoup
 
 attribute_regex = re.compile('\[(?P<attribute>\w+)(?P<operator>[=~\|\^\$\*]?)=?["\']?(?P<value>[^\]"]*)["\']?\]')
-pseudo_class_regex = re.compile(ur':(([^:.#(*\[]|\([^)]+\))+)')
+pseudo_classes_regexes = (
+    re.compile(':(first-child)'),
+    re.compile(':(last-child)')
+)
 
 def get_attribute_checker(operator, attribute, value=''):
     """
@@ -62,7 +65,7 @@ def is_first_content_node(el):
     if is_white_space(el):
         result = is_first_content_node(el.previousSibling)
     return result
-
+        
 def get_pseudo_class_checker(psuedo_class):
     """
     Takes a psuedo_class, like "first-child" or "last-child"
@@ -70,9 +73,9 @@ def get_pseudo_class_checker(psuedo_class):
     that psuedo class
     """
     return {
-        'first-child': lambda el: is_first_content_node(getattr(el, 'previousSibling', None)),
-        'last-child': lambda el: is_last_content_node(getattr(el, 'nextSibling', None))
-    }.get(psuedo_class, lambda el: False)
+        'first-child': lambda el: is_first_content_node(el.previousSibling),
+        'last-child': lambda el: is_last_content_node(el.nextSibling)
+    }.get(psuedo_class)
 
 def get_checker(functions):
     def checker(el):
@@ -114,9 +117,11 @@ def select(soup, selector):
             #
             # Get pseudo classes from token
             #
-            for match in pseudo_class_regex.finditer(token):
-                checker_functions.append(get_pseudo_class_checker(match.groups(1)[0]))
-
+            for pseudo_class_regex in pseudo_classes_regexes:
+                match = pseudo_class_regex.search(token)
+                if match:
+                    checker_functions.append(get_pseudo_class_checker(match.groups(1)[0]))
+            
             checker = get_checker(checker_functions)
             #
             # Get tag
