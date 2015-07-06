@@ -24,10 +24,11 @@ class InlineCssNode(template.Node):
                 path = smart_unicode(path)
             if settings.DEBUG:
                 expanded_path = finders.find(path)
+                css_file = open(expanded_path)
             else:
-                expanded_path = staticfiles_storage.path(path)
+                css_file = staticfiles_storage.open(path)
 
-            with open(expanded_path) as css_file:
+            with css_file:
                 css = ''.join((css, css_file.read()))
 
         engine = conf.get_engine()(html=rendered_contents, css=css)
