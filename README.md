@@ -62,6 +62,14 @@ INSTALLED_APPS = (
 </html>
 ```
 
+#### Settings
+
+```
+#avoid using cdn when you have remotes storage systems
+INLINECSS_USE_STATIC_FINDER = False
+```
+
+
 ## Acknowledgements
 
 Thanks to Tanner Netterville for his efforts on [Pynliner](https://github.com/rennat/pynliner).

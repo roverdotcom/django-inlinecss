@@ -22,7 +22,7 @@ class InlineCssNode(template.Node):
             path = expression.resolve(context, True)
             if path is not None:
                 path = smart_unicode(path)
-            if settings.DEBUG:
+            if settings.DEBUG or not getattr(settings, 'INLINECSS_USE_STATIC_FINDER', False):
                 expanded_path = finders.find(path)
                 css_file = open(expanded_path)
             else:
