@@ -20,7 +20,7 @@ from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
 from django_inlinecss.tests.constants import TESTS_STATIC_DIR
 
 
-templates_override = settings.TEMPLATE_DIRS + (TESTS_TEMPLATE_DIR,)
+templates_override = list(settings.TEMPLATE_DIRS) + [TESTS_TEMPLATE_DIR]
 
 
 @override_settings(

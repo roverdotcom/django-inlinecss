@@ -8,6 +8,7 @@
 import os
 import sys
 
+import django
 from django.conf import settings
 from django.core.management import call_command
 
@@ -32,6 +33,9 @@ def main():
         DEBUG=True
     )
 
+    # Setup Django if 1.7 or greater
+    if django.get_version() >= '1.7':
+        django.setup()
     call_command('test', 'django_inlinecss')
 
 if __name__ == '__main__':
