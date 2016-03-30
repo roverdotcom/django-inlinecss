@@ -28,8 +28,7 @@ setup(
         ],
     install_requires=[
         'Django',
-        'cssutils',
-        'BeautifulSoup',
-        'mock'
-    ]
+        'pynliner',
+        'mock',
+    ],
 )
