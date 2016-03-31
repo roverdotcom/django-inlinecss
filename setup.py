@@ -28,12 +28,7 @@ setup(
         ],
     install_requires=[
         'Django',
-        'pynliner==0.5.2',
+        'pynliner3',
         'mock',
     ],
-
-    # Python 3 friendly version
-    dependency_links=[
-        'https://github.com/agronholm/pynliner/tarball/master#egg=pynliner-0.5.2',
-    ]
 )

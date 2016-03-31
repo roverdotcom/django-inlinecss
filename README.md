@@ -17,6 +17,7 @@ template language.
 - Python 2.7+,3.4+
 - Django 1.6+
 
+
 #### Step 2: Install django_inlinecss
 
 Add ```django_inlinecss``` to your ```settings.py```:
