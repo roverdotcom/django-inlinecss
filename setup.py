@@ -27,7 +27,7 @@ setup(
         'Topic :: Text Processing :: Markup :: HTML',
         ],
     install_requires=[
-        'Django',
+        'Django >= 1.8',
         'cssutils',
         'BeautifulSoup',
         'mock'
