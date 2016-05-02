@@ -8,15 +8,15 @@
 import os
 import sys
 
-from django.conf import settings
-from django.core.management import call_command
+import django
+import django.conf
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_ROOT)
 
 
 def main():
-    settings.configure(
+    django.conf.settings.configure(
         INSTALLED_APPS=[
             'django.contrib.auth',
             'django.contrib.contenttypes',
@@ -28,11 +28,17 @@ def main():
                 'ENGINE': 'django.db.backends.sqlite3',
             }
         },
+        TEMPLATES=[{
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [],
+            'APP_DIRS': True,
+        }],
         STATIC_URL='/static/',
         DEBUG=True
     )
+    django.setup()
 
-    call_command('test', 'django_inlinecss')
+    django.core.management.call_command('test', 'django_inlinecss')
 
 if __name__ == '__main__':
     main()
