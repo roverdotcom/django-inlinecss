@@ -11,7 +11,6 @@ from django.test.utils import override_settings
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
-from django.template import Context
 from django.template.loader import get_template
 
 from mock import patch
@@ -20,11 +19,14 @@ from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
 from django_inlinecss.tests.constants import TESTS_STATIC_DIR
 
 
-templates_override = settings.TEMPLATE_DIRS + (TESTS_TEMPLATE_DIR,)
+template_dirs_override = settings.TEMPLATE_DIRS + [TESTS_TEMPLATE_DIR]
+templates_override = settings.TEMPLATES
+templates_override[0]['DIRS'] = [TESTS_TEMPLATE_DIR]
 
 
 @override_settings(
-    TEMPLATE_DIRS=templates_override,
+    TEMPLATES=templates_override,
+    TEMPLATE_DIRS=template_dirs_override,
     STATIC_ROOT=TESTS_STATIC_DIR)
 class InlineCssTests(TestCase):
     def setUp(self):
@@ -53,7 +55,7 @@ class InlineCssTests(TestCase):
         to load a CSS file and inline it as part of a rendering step.
         """
         template = get_template('single_staticfiles_css.html')
-        rendered = template.render(Context({}))
+        rendered = template.render({})
         self.assert_foo_and_bar_rendered(rendered)
 
     def test_multiple_staticfiles_css(self):
@@ -63,7 +65,7 @@ class InlineCssTests(TestCase):
         This tests that passing two css files works.
         """
         template = get_template('multiple_staticfiles_css.html')
-        rendered = template.render(Context({}))
+        rendered = template.render({})
         self.assert_foo_and_bar_rendered(rendered)
 
     def test_variable_defined_staticfiles_css(self):
@@ -72,7 +74,7 @@ class InlineCssTests(TestCase):
         may be defined as variables instead of strings.
         """
         template = get_template('variable_defined_staticfiles_css.html')
-        context = Context({'foo_css': 'foo.css', 'bar_css': 'bar.css'})
+        context = {'foo_css': 'foo.css', 'bar_css': 'bar.css'}
 
         rendered = template.render(context)
         self.assert_foo_and_bar_rendered(rendered)
@@ -84,7 +86,7 @@ class InlineCssTests(TestCase):
         """
         template = get_template(
             'variable_and_string_defined_staticfiles_css.html')
-        context = Context({'foo_css': 'foo.css'})
+        context = {'foo_css': 'foo.css'}
         rendered = template.render(context)
         self.assert_foo_and_bar_rendered(rendered)
 
@@ -94,7 +96,7 @@ class InlineCssTests(TestCase):
         content wrapped in the inlinecss block.
         """
         template = get_template('inline_css.html')
-        rendered = template.render(Context({}))
+        rendered = template.render({})
         self.assert_foo_and_bar_rendered(rendered)
 
     def test_context_vars_render_first(self):
@@ -103,9 +105,9 @@ class InlineCssTests(TestCase):
         the inline css step is undertaken.
         """
         template = get_template('context_vars_render_first.html')
-        context = Context({
+        context = {
             'foo_div_open_tag': mark_safe('<div class="foo">'),
-            'bar_div_open_tag': mark_safe('<div class="bar">')})
+            'bar_div_open_tag': mark_safe('<div class="bar">')}
         rendered = template.render(context)
         self.assert_foo_and_bar_rendered(rendered)
 
@@ -115,7 +117,7 @@ class InlineCssTests(TestCase):
         structures.
         """
         template = get_template('template_inheritance.html')
-        rendered = template.render(Context({}))
+        rendered = template.render({})
         self.assert_foo_and_bar_rendered(rendered)
 
     def test_unicode_context_variables(self):
@@ -125,8 +127,8 @@ class InlineCssTests(TestCase):
         """
         template = get_template('unicode_context_variables.html')
 
-        rendered = template.render(Context({
-            'unicode_string': u'I love playing with my pi\xf1ata'}))
+        rendered = template.render({
+            'unicode_string': u'I love playing with my pi\xf1ata'})
         self.assertRegexpMatches(
             rendered,
             '<div class="bar" style="padding: 10px 15px 20px 25px">')
@@ -145,7 +147,7 @@ class InlineCssTests(TestCase):
         """
         template = get_template('comments_are_ignored.html')
 
-        rendered = template.render(Context({}))
+        rendered = template.render({})
         self.assertRegexpMatches(
             rendered,
             '<body>\s+<!-- Here is comment one -->\s+<div')
@@ -158,7 +160,8 @@ class InlineCssTests(TestCase):
 
 
 @override_settings(
-    TEMPLATE_DIRS=templates_override,
+    TEMPLATES=templates_override,
+    TEMPLATE_DIRS=template_dirs_override,
     STATIC_ROOT=TESTS_STATIC_DIR)
 class DebugModeStaticfilesTests(TestCase):
     @override_settings(DEBUG=True)
@@ -167,7 +170,7 @@ class DebugModeStaticfilesTests(TestCase):
         full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
         find.return_value = full_path
         template = get_template('single_staticfiles_css.html')
-        template.render(Context({}))
+        template.render({})
         find.assert_called_once_with("foobar.css")
 
     @patch('django.contrib.staticfiles.storage.staticfiles_storage.path')
@@ -175,5 +178,5 @@ class DebugModeStaticfilesTests(TestCase):
         full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
         path.return_value = full_path
         template = get_template('single_staticfiles_css.html')
-        template.render(Context({}))
+        template.render({})
         path.assert_called_once_with("foobar.css")
