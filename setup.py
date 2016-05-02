@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-inlinecss',
-    version="0.1.1",
+    version="0.1.2",
     description='A Django app useful for inlining CSS (primarily for e-mails)',
     long_description=open('README.md').read(),
     author='Philip Kimmey',
