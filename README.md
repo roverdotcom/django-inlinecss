@@ -3,7 +3,7 @@
 ## About
 
 Inlining CSS is necessary for email generation and sending
-but is currently a suprisingly large hassle.
+but is currently a surprisingly large hassle.
 
 This library aims to make it a breeze in the Django
 template language.
@@ -14,8 +14,9 @@ template language.
 
 - BeautifulSoup
 - cssutils
-- Python 2.6+
-- Django 1.4+
+- Python 2.7+,3.4+
+- Django 1.6+
+
 
 #### Step 2: Install django_inlinecss
 
