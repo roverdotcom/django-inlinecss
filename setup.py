@@ -28,7 +28,7 @@ setup(
         ],
     install_requires=[
         'Django',
-        'pynliner3',
+        'pynliner',
         'mock',
     ],
 )
