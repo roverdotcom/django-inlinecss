@@ -22,13 +22,9 @@ class InlineCssNode(template.Node):
             path = expression.resolve(context, True)
             if path is not None:
                 path = smart_text(path)
-            if settings.DEBUG:
-                expanded_path = finders.find(path)
-            else:
-                expanded_path = staticfiles_storage.path(path)
 
-            with open(expanded_path) as css_file:
-                css = ''.join((css, css_file.read()))
+            css_loader = conf.get_css_loader()()
+            css = ''.join((css, css_loader.load(path)))
 
         engine = conf.get_engine()(html=rendered_contents, css=css)
         return engine.render()
