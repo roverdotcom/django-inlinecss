@@ -1,4 +1,4 @@
-from django.utils import importlib
+import importlib
 
 
 DEFAULT_ENGINE = 'django_inlinecss.engines.PynlinerEngine'
