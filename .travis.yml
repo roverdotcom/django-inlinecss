@@ -9,4 +9,7 @@ env:
 install:
   - pip install -q Django==$DJANGO_VERSION
   - python setup.py -q install
-script: ./run_tests.py
+  - pip install .[flake8]
+script:
+  - flake8
+  - ./run_tests.py

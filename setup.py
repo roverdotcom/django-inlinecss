@@ -1,8 +1,34 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
-from setuptools import setup, find_packages
+
+from setuptools import find_packages
+from setuptools import setup
+
+
+# What packages are required for this module to be executed?
+REQUIRED = [
+    'Django>=1.11',
+    'pynliner',
+    'future>=0.16.0',
+]
+
+# What packages are required only for tests?
+TESTS = [
+    'mock==2.0.0',
+]
+
+# What packages are optional?
+EXTRAS = {
+    'flake8': [
+        'flake8==3.6.0',
+        'flake8-isort==2.6.0',
+        'isort==4.3.4',
+        'testfixtures==6.3.0',
+    ],
+}
+
 
 setup(
     name='django-inlinecss',
@@ -36,10 +62,7 @@ setup(
         'Topic :: Communications :: Email',
         'Topic :: Text Processing :: Markup :: HTML',
     ],
-    install_requires=[
-        'Django>=1.11',
-        'pynliner',
-        'mock',
-        'future>=0.16.0',
-    ],
+    install_requires=REQUIRED,
+    tests_require=TESTS,
+    extras_require=EXTRAS,
 )

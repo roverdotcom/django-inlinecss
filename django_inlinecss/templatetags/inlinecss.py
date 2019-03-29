@@ -1,15 +1,16 @@
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
-from django import template
 
-from django.utils.encoding import smart_text
+from django import template
+from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.conf import settings
+from django.utils.encoding import smart_text
 
 from django_inlinecss import conf
+
 
 register = template.Library()
 
