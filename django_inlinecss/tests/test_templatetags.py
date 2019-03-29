@@ -11,17 +11,14 @@ from __future__ import unicode_literals
 
 import os
 
+from django.conf import settings
 from django.template.loader import get_template
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.utils.safestring import mark_safe
 from mock import patch
 
-from django_inlinecss.tests.constants import TESTS_STATIC_DIR
 
-
-@override_settings(
-    STATIC_ROOT=TESTS_STATIC_DIR)
 class InlinecssTests(TestCase):
     def setUp(self):
         super(InlinecssTests, self).setUp()
@@ -153,13 +150,14 @@ class InlinecssTests(TestCase):
             r'This is the "bar" div.\s+<!-- comment three -->\s+')
 
 
-@override_settings(
-    STATIC_ROOT=TESTS_STATIC_DIR)
 class DebugModeStaticfilesTests(TestCase):
     @override_settings(DEBUG=True)
     @patch('django.contrib.staticfiles.finders.find')
     def test_debug_mode_uses_staticfiles_finder(self, find):
-        full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
+        full_path = os.path.join(
+            settings.STATIC_ROOT,
+            'foobar.css',
+        )
         find.return_value = full_path
         template = get_template('single_staticfiles_css.html')
         template.render({})
@@ -167,7 +165,10 @@ class DebugModeStaticfilesTests(TestCase):
 
     @patch('django.contrib.staticfiles.storage.staticfiles_storage.path')
     def test_non_debug_mode_uses_staticfiles_storage(self, path):
-        full_path = os.path.join(TESTS_STATIC_DIR, "foobar.css")
+        full_path = os.path.join(
+            settings.STATIC_ROOT,
+            'foobar.css',
+        )
         path.return_value = full_path
         template = get_template('single_staticfiles_css.html')
         template.render({})

@@ -17,6 +17,8 @@ REQUIRED = [
 # What packages are required only for tests?
 TESTS = [
     'mock==2.0.0',
+    'pytest==4.3.1',
+    'pytest-django==3.4.8',
 ]
 
 # What packages are optional?
