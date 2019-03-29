@@ -29,6 +29,7 @@ EXTRAS = {
         'isort==4.3.4',
         'testfixtures==6.3.0',
     ],
+    'tests': TESTS,
 }
 
 

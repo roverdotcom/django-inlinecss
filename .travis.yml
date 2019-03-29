@@ -8,8 +8,7 @@ env:
   - DJANGO_VERSION=1.11
 install:
   - pip install -q Django==$DJANGO_VERSION
-  - python setup.py -q install
-  - pip install .[flake8]
+  - pip install -e .[flake8,tests]
 script:
   - flake8
-  - ./run_tests.py
+  - pytest
