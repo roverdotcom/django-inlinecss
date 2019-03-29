@@ -3,9 +3,22 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import io
+import os
+
 from setuptools import find_packages
 from setuptools import setup
 
+
+# Package meta-data.
+NAME = 'django-inlinecss'
+SRC_DIR = 'django_inlinecss'
+DESCRIPTION = 'A Django app useful for inlining CSS (primarily for e-mails)'
+URL = 'https://github.com/roverdotcom/django-inlinecss'
+EMAIL = 'philip@rover.com'
+AUTHOR = 'Philip Kimmey'
+REQUIRES_PYTHON = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <3.7'
+VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -32,19 +45,42 @@ EXTRAS = {
     'tests': TESTS,
 }
 
+here = os.path.abspath(os.path.dirname(__file__))
+
+
+# Import the README and use it as the long-description.
+# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
+
+try:
+    # Python 3 will raise FileNotFoundError instead of IOError
+    FileNotFoundError = IOError
+except NameError:
+    pass
+
+try:
+    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+        long_description = '\n' + f.read()
+except FileNotFoundError:
+    long_description = DESCRIPTION
+
+# Load the package's __version__.py module as a dictionary.
+about = {}
+if not VERSION:
+    with open(os.path.join(here, SRC_DIR, '__version__.py')) as f:
+        exec(f.read(), about)
+else:
+    about['__version__'] = VERSION
+
 
 setup(
-    name='django-inlinecss',
-    version="0.1.2",
-    description='A Django app useful for inlining CSS (primarily for e-mails)',
-    long_description=open('README.md').read(),
-    author='Philip Kimmey',
-    author_email='philip@rover.com',
-    maintainer='Philip Kimmey',
-    maintainer_email='philip@rover.com',
-    license='BSD',
-    url='https://github.com/roverdotcom/django-inlinecss',
-    download_url='https://github.com/roverdotcom/django-inlinecss/releases',
+    name=NAME,
+    version=about['__version__'],
+    description=DESCRIPTION,
+    long_description=long_description,
+    author=AUTHOR,
+    author_email=EMAIL,
+    license='MIT',
+    url=URL,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
@@ -53,7 +89,7 @@ setup(
         'Environment :: Other Environment',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
