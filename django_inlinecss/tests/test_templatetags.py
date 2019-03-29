@@ -4,27 +4,20 @@ Test the functioning of the templatetag itself.
 The actual CSS inlining displayed here is extremely simple:
 tests of the CSS selector functionality is independent.
 """
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
+
 import os
 
+from django.template.loader import get_template
 from django.test import TestCase
 from django.test.utils import override_settings
-from django.conf import settings
 from django.utils.safestring import mark_safe
-
-from django.template import Context
-from django.template.loader import get_template
-
 from mock import patch
 
-from django_inlinecss.tests.constants import TESTS_TEMPLATE_DIR
 from django_inlinecss.tests.constants import TESTS_STATIC_DIR
-
-
-templates_override = list(settings.TEMPLATES) + [TESTS_TEMPLATE_DIR]
 
 
 @override_settings(
@@ -36,16 +29,16 @@ class InlinecssTests(TestCase):
     def assert_foo_and_bar_rendered(self, rendered):
         foo_div_regex = (
             r'<div class="foo" style="margin: 10px 15px 20px 25px">'
-            '\s+This is the "foo" div.\s+'
-            '<\/div>')
+            r'\s+This is the "foo" div.\s+'
+            r'<\/div>')
         self.assertRegexpMatches(
             rendered,
             foo_div_regex)
 
         bar_div_regex = (
             r'<div class="bar" style="padding: 10px 15px 20px 25px">'
-            '\s+This is the "bar" div.\s+'
-            '<\/div>')
+            r'\s+This is the "bar" div.\s+'
+            r'<\/div>')
         self.assertRegexpMatches(
             rendered,
             bar_div_regex)
@@ -151,13 +144,13 @@ class InlinecssTests(TestCase):
         rendered = template.render({})
         self.assertRegexpMatches(
             rendered,
-            '<body>\s+<!-- Here is comment one -->\s+<div')
+            r'<body>\s+<!-- Here is comment one -->\s+<div')
         self.assertRegexpMatches(
             rendered,
-            'This is the "foo" div.\s+<!-- comment two -->\s+')
+            r'This is the "foo" div.\s+<!-- comment two -->\s+')
         self.assertRegexpMatches(
             rendered,
-            'This is the "bar" div.\s+<!-- comment three -->\s+')
+            r'This is the "bar" div.\s+<!-- comment three -->\s+')
 
 
 @override_settings(
