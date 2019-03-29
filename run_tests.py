@@ -29,13 +29,24 @@ def main():
                 'ENGINE': 'django.db.backends.sqlite3',
             }
         },
+        TEMPLATES = [{
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [os.path.join(PROJECT_ROOT,"django_inlinecss","tests","templates"),],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        }],
         STATIC_URL='/static/',
         DEBUG=True
     )
 
-    # Setup Django if 1.7 or greater
-    if django.get_version() >= '1.7':
-        django.setup()
+    django.setup()
     call_command('test', 'django_inlinecss')
 
 if __name__ == '__main__':
