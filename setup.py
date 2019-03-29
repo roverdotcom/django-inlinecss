@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from __future__ import unicode_literals
 from setuptools import setup, find_packages
 
 setup(
@@ -23,12 +27,19 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Communications :: Email',
         'Topic :: Text Processing :: Markup :: HTML',
-        ],
+    ],
     install_requires=[
-        'Django',
+        'Django>=1.11',
         'pynliner',
         'mock',
+        'future>=0.16.0',
     ],
 )
