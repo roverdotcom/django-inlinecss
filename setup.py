@@ -40,5 +40,6 @@ setup(
         'Django>=1.11',
         'pynliner',
         'mock',
+        'future>=0.16.0',
     ],
 )
