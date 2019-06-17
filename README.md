@@ -20,7 +20,11 @@ template language.
 
 #### Step 2: Install django_inlinecss
 
-Add ```django_inlinecss``` to your ```settings.py```:
+1. Install `django-inlinecss`
+```bash
+pip install django-inlinecss
+```
+2. Add ```django_inlinecss``` to your ```settings.py```:
 
 ```python
 INSTALLED_APPS = (
