@@ -21,21 +21,20 @@ template language.
 #### Step 2: Install django_inlinecss
 
 1. Install `django-inlinecss`
-```bash
-pip install django-inlinecss
-```
+    ```bash
+    pip install django-inlinecss
+    ```
 2. Add ```django_inlinecss``` to your ```settings.py```:
-
-```python
-INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.webdesign',
-        'django.contrib.contenttypes',
-        '...',
-        '...',
-        '...',
-        'django_inlinecss')
-```
+    ```python
+    INSTALLED_APPS = (
+            'django.contrib.auth',
+            'django.contrib.webdesign',
+            'django.contrib.contenttypes',
+            '...',
+            '...',
+            '...',
+            'django_inlinecss')
+    ```
 
 #### Step 3: Use the templatetag
 
