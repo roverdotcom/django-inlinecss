@@ -21,6 +21,10 @@ class StaticfilesFinderCSSLoader(BaseCSSLoader):
         Retrieve CSS contents from the local filesystem with static finders
         """
         expanded_path = finders.find(path)
+
+        if expanded_path is None:
+            raise IOError('{} does not exist'.format(path))
+
         with open(expanded_path) as css_file:
             return css_file.read()
 
