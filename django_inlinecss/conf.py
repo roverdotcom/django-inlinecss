@@ -10,6 +10,7 @@ except ImportError:
     from django.utils import importlib
 
 DEFAULT_ENGINE = 'django_inlinecss.engines.PynlinerEngine'
+DEFAULT_CSS_LOADER = 'django_inlinecss.css_loaders.StaticfilesStorageCSSLoader'
 
 
 def load_class_by_path(path):
@@ -27,11 +28,5 @@ def get_engine():
 
 def get_css_loader():
     from django.conf import settings
-
-    if settings.DEBUG:
-        default_css_loader = 'django_inlinecss.css_loaders.StaticFinderCSSLoader'
-    else:
-        default_css_loader = 'django_inlinecss.css_loaders.StaticPathCSSLoader'
-
-    engine_path = getattr(settings, 'INLINECSS_CSS_LOADER', default_css_loader)
+    engine_path = getattr(settings, 'INLINECSS_CSS_LOADER', DEFAULT_CSS_LOADER)
     return load_class_by_path(engine_path)
