@@ -2,6 +2,7 @@
 Test CSS loaders
 """
 from django.test import TestCase
+
 from django_inlinecss.css_loaders import StaticFinderCSSLoader, StaticPathCSSLoader
 
 
