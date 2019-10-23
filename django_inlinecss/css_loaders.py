@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 
@@ -25,8 +30,8 @@ class StaticfilesFinderCSSLoader(BaseCSSLoader):
         if expanded_path is None:
             raise IOError('{} does not exist'.format(path))
 
-        with open(expanded_path) as css_file:
-            return css_file.read()
+        with open(expanded_path, 'rb') as css_file:
+            return css_file.read().decode('utf-8')
 
 
 class StaticfilesStorageCSSLoader(BaseCSSLoader):
@@ -34,4 +39,4 @@ class StaticfilesStorageCSSLoader(BaseCSSLoader):
         """
         Retrieve CSS contents with staticfiles storage
         """
-        return staticfiles_storage.open(path).read()
+        return staticfiles_storage.open(path).read().decode('utf-8')

@@ -28,7 +28,7 @@ class InlinecssTests(TestCase):
             r'<div class="foo" style="margin: 10px 15px 20px 25px">'
             r'\s+This is the "foo" div.\s+'
             r'<\/div>')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             foo_div_regex)
 
@@ -36,7 +36,7 @@ class InlinecssTests(TestCase):
             r'<div class="bar" style="padding: 10px 15px 20px 25px">'
             r'\s+This is the "bar" div.\s+'
             r'<\/div>')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             bar_div_regex)
 
@@ -120,10 +120,10 @@ class InlinecssTests(TestCase):
 
         rendered = template.render({
             'unicode_string': u'I love playing with my pi\xf1ata'})
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             '<div class="bar" style="padding: 10px 15px 20px 25px">')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             u'I love playing with my pi\xf1ata')
 
@@ -139,13 +139,13 @@ class InlinecssTests(TestCase):
         template = get_template('comments_are_ignored.html')
 
         rendered = template.render({})
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'<body>\s+<!-- Here is comment one -->\s+<div')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'This is the "foo" div.\s+<!-- comment two -->\s+')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'This is the "bar" div.\s+<!-- comment three -->\s+')
 
