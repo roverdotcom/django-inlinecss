@@ -2,11 +2,6 @@ from django.contrib.staticfiles import finders
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 
-def load_css_by_path(path):
-    with open(path) as css_file:
-        return css_file.read()
-
-
 class BaseCSSLoader(object):
     def __init__(self):
         pass
@@ -20,19 +15,19 @@ class BaseCSSLoader(object):
         raise NotImplementedError()
 
 
-class StaticFinderCSSLoader(BaseCSSLoader):
+class StaticfilesFinderCSSLoader(BaseCSSLoader):
     def load(self, path):
         """
-        Retrieve CSS contents by static finders
+        Retrieve CSS contents from the local filesystem with static finders
         """
         expanded_path = finders.find(path)
-        return load_css_by_path(expanded_path)
+        with open(expanded_path) as css_file:
+            return css_file.read()
 
 
-class StaticPathCSSLoader(BaseCSSLoader):
+class StaticfilesStorageCSSLoader(BaseCSSLoader):
     def load(self, path):
         """
-        Retrieve CSS contents by local file system
+        Retrieve CSS contents with staticfiles storage
         """
-        expanded_path = staticfiles_storage.path(path)
-        return load_css_by_path(expanded_path)
+        return staticfiles_storage.open(path).read()
