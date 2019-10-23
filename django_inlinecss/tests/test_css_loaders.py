@@ -1,37 +1,46 @@
 """
 Test CSS loaders
 """
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from django.conf import settings
 from django.test import TestCase
+from django.test import override_settings
 
-from django_inlinecss.css_loaders import StaticFinderCSSLoader, StaticPathCSSLoader
+from django_inlinecss.css_loaders import StaticfilesFinderCSSLoader
+from django_inlinecss.css_loaders import StaticfilesStorageCSSLoader
 
 
-class StaticFinderCSSLoaderTestCase(TestCase):
+@override_settings(STATICFILES_DIRS=[settings.STATIC_ROOT], STATIC_ROOT='')
+class StaticfilesFinderCSSLoaderTestCase(TestCase):
     def setUp(self):
-        self.loader = StaticFinderCSSLoader()
-        super(StaticFinderCSSLoaderTestCase, self).setUp()
+        self.loader = StaticfilesFinderCSSLoader()
+        super(StaticfilesFinderCSSLoaderTestCase, self).setUp()
 
-    def test_debug_mode_uses_staticfiles_finder(self):
+    def test_loads_existing_css_file(self):
         css = self.loader.load('bar.css')
         self.assertIn('div.bar {', css)
 
-    def test_load_file_does_not_exists(self):
+    def test_load_file_does_not_exist(self):
         with self.assertRaises(IOError) as e:
             self.loader.load('missing.css')
 
-        self.assertEqual(e.exception.strerror, 'No such file or directory')
+        self.assertEqual(str(e.exception), 'missing.css does not exist')
 
 
-class StaticPathCSSLoaderTestCase(TestCase):
+class StaticfilesStorageCSSLoaderTestCase(TestCase):
     def setUp(self):
-        self.loader = StaticPathCSSLoader()
-        super(StaticPathCSSLoaderTestCase, self).setUp()
+        self.loader = StaticfilesStorageCSSLoader()
+        super(StaticfilesStorageCSSLoaderTestCase, self).setUp()
 
-    def test_load_existing_css_file(self):
+    def test_loads_existing_css_file(self):
         css = self.loader.load('bar.css')
         self.assertIn('div.bar {', css)
 
-    def test_load_file_does_not_exists(self):
+    def test_load_file_does_not_exist(self):
         with self.assertRaises(IOError) as e:
             self.loader.load('missing.css')
 
