@@ -28,7 +28,7 @@ class InlinecssTests(TestCase):
             r'<div class="foo" style="margin: 10px 15px 20px 25px">'
             r'\s+This is the "foo" div.\s+'
             r'<\/div>')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             foo_div_regex)
 
@@ -36,7 +36,7 @@ class InlinecssTests(TestCase):
             r'<div class="bar" style="padding: 10px 15px 20px 25px">'
             r'\s+This is the "bar" div.\s+'
             r'<\/div>')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             bar_div_regex)
 
@@ -120,10 +120,10 @@ class InlinecssTests(TestCase):
 
         rendered = template.render({
             'unicode_string': u'I love playing with my pi\xf1ata'})
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             '<div class="bar" style="padding: 10px 15px 20px 25px">')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             u'I love playing with my pi\xf1ata')
 
@@ -139,32 +139,20 @@ class InlinecssTests(TestCase):
         template = get_template('comments_are_ignored.html')
 
         rendered = template.render({})
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'<body>\s+<!-- Here is comment one -->\s+<div')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'This is the "foo" div.\s+<!-- comment two -->\s+')
-        self.assertRegexpMatches(
+        self.assertRegex(
             rendered,
             r'This is the "bar" div.\s+<!-- comment three -->\s+')
 
 
-class DebugModeStaticfilesTests(TestCase):
-    @override_settings(DEBUG=True)
-    @patch('django.contrib.staticfiles.finders.find')
-    def test_debug_mode_uses_staticfiles_finder(self, find):
-        full_path = os.path.join(
-            settings.STATIC_ROOT,
-            'foobar.css',
-        )
-        find.return_value = full_path
-        template = get_template('single_staticfiles_css.html')
-        template.render({})
-        find.assert_called_once_with("foobar.css")
-
+class GetLoaderStaticfilesTests(TestCase):
     @patch('django.contrib.staticfiles.storage.staticfiles_storage.path')
-    def test_non_debug_mode_uses_staticfiles_storage(self, path):
+    def test_default_uses_staticfiles_storage(self, path):
         full_path = os.path.join(
             settings.STATIC_ROOT,
             'foobar.css',
@@ -173,3 +161,15 @@ class DebugModeStaticfilesTests(TestCase):
         template = get_template('single_staticfiles_css.html')
         template.render({})
         path.assert_called_once_with("foobar.css")
+
+    @override_settings(INLINECSS_CSS_LOADER='django_inlinecss.css_loaders.StaticfilesFinderCSSLoader')
+    @patch('django.contrib.staticfiles.finders.find')
+    def test_override_uses_staticfiles_finder(self, find):
+        full_path = os.path.join(
+            settings.STATIC_ROOT,
+            'foobar.css',
+        )
+        find.return_value = full_path
+        template = get_template('single_staticfiles_css.html')
+        template.render({})
+        find.assert_called_once_with("foobar.css")
