@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
-import io
 import os
 import sys
 from shutil import rmtree
@@ -12,7 +5,6 @@ from shutil import rmtree
 from setuptools import Command
 from setuptools import find_packages
 from setuptools import setup
-
 
 # Package meta-data.
 NAME = 'django-inlinecss'
@@ -56,13 +48,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 
 try:
-    # Python 3 will raise FileNotFoundError instead of IOError
-    FileNotFoundError = IOError
-except NameError:
-    pass
-
-try:
-    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION
@@ -85,7 +71,7 @@ class UploadCommand(Command):
     @staticmethod
     def status(s):
         """Prints things in bold."""
-        print('\033[1m{0}\033[0m'.format(s))
+        print(f'\033[1m{s}\033[0m')
 
     def initialize_options(self):
         pass
@@ -101,13 +87,13 @@ class UploadCommand(Command):
             pass
 
         self.status('Building Source and Wheel (universal) distribution…')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+        os.system(f'{sys.executable} setup.py sdist bdist_wheel --universal')
 
         self.status('Uploading the package to PyPI via Twine…')
         os.system('twine upload dist/*')
 
         self.status('Pushing git tags…')
-        os.system('git tag v{0}'.format(about['__version__']))
+        os.system('git tag v{}'.format(about['__version__']))
         os.system('git push --tags')
 
         sys.exit()
@@ -128,20 +114,18 @@ setup(
     zip_safe=False,
     keywords=['html', 'css', 'inline', 'style', 'email'],
     classifiers=[
-        'Environment :: Other Environment',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Topic :: Communications :: Email',
-        'Topic :: Text Processing :: Markup :: HTML',
+        "Environment :: Other Environment",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Topic :: Communications :: Email",
+        "Topic :: Text Processing :: Markup :: HTML",
     ],
     install_requires=REQUIRED,
     tests_require=TESTS,
