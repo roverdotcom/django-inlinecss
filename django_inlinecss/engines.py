@@ -1,14 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
-from builtins import object
-
 import pynliner
 
 
-class EngineBase(object):
+class EngineBase:
     def __init__(self, html, css):
         self.html = html
         self.css = css
