@@ -34,7 +34,7 @@ TESTS = [
 # What packages are optional?
 EXTRAS = {
     'flake8': [
-        'flake8==3.6.0',
+        'flake8==3.8.0',
         'flake8-isort==2.6.0',
         'isort==4.3.4',
         'testfixtures==6.3.0',
