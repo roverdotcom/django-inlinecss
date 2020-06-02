@@ -4,11 +4,6 @@ Test the functioning of the templatetag itself.
 The actual CSS inlining displayed here is extremely simple:
 tests of the CSS selector functionality is independent.
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import os
 
 from django.conf import settings
@@ -21,7 +16,7 @@ from mock import patch
 
 class InlinecssTests(TestCase):
     def setUp(self):
-        super(InlinecssTests, self).setUp()
+        super().setUp()
 
     def assert_foo_and_bar_rendered(self, rendered):
         foo_div_regex = (
