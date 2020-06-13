@@ -4,6 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from django import template
+from django.contrib.staticfiles.finders import find
 from django.utils.encoding import smart_text
 
 from django_inlinecss import conf
@@ -25,8 +26,7 @@ class InlineCssNode(template.Node):
             if path is not None:
                 path = smart_text(path)
 
-            css_loader = conf.get_css_loader()()
-            css = ''.join((css, css_loader.load(path)))
+            css = ''.join((css, find(path)))
 
         engine = conf.get_engine()(html=rendered_contents, css=css)
         return engine.render()
