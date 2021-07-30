@@ -23,10 +23,10 @@ class StaticfilesFinderCSSLoader(BaseCSSLoader):
         expanded_path = finders.find(path)
 
         if expanded_path is None:
-            raise OSError(f'{path} does not exist')
+            raise OSError(f"{path} does not exist")
 
-        with open(expanded_path, 'rb') as css_file:
-            return css_file.read().decode('utf-8')
+        with open(expanded_path, "rb") as css_file:
+            return css_file.read().decode("utf-8")
 
 
 class StaticfilesStorageCSSLoader(BaseCSSLoader):
@@ -34,4 +34,4 @@ class StaticfilesStorageCSSLoader(BaseCSSLoader):
         """
         Retrieve CSS contents with staticfiles storage
         """
-        return staticfiles_storage.open(path).read().decode('utf-8')
+        return staticfiles_storage.open(path).read().decode("utf-8")

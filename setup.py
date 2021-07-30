@@ -38,7 +38,7 @@ EXTRAS = {
         'isort==5.13.2',
         'testfixtures==8.0.0',
     ],
-    'tests': TESTS,
+    "tests": TESTS,
 }
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -48,30 +48,30 @@ here = os.path.abspath(os.path.dirname(__file__))
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 
 try:
-    with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
-        long_description = '\n' + f.read()
+    with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+        long_description = "\n" + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
 if not VERSION:
-    with open(os.path.join(here, SRC_DIR, '__version__.py')) as f:
+    with open(os.path.join(here, SRC_DIR, "__version__.py")) as f:
         exec(f.read(), about)
 else:
-    about['__version__'] = VERSION
+    about["__version__"] = VERSION
 
 
 class UploadCommand(Command):
     """Support setup.py upload."""
 
-    description = 'Build and publish the package.'
+    description = "Build and publish the package."
     user_options = []
 
     @staticmethod
     def status(s):
         """Prints things in bold."""
-        print(f'\033[1m{s}\033[0m')
+        print(f"\033[1m{s}\033[0m")
 
     def initialize_options(self):
         pass
@@ -81,38 +81,38 @@ class UploadCommand(Command):
 
     def run(self):
         try:
-            self.status('Removing previous builds…')
-            rmtree(os.path.join(here, 'dist'))
+            self.status("Removing previous builds…")
+            rmtree(os.path.join(here, "dist"))
         except OSError:
             pass
 
-        self.status('Building Source and Wheel (universal) distribution…')
-        os.system(f'{sys.executable} setup.py sdist bdist_wheel --universal')
+        self.status("Building Source and Wheel (universal) distribution…")
+        os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
 
-        self.status('Uploading the package to PyPI via Twine…')
-        os.system('twine upload dist/*')
+        self.status("Uploading the package to PyPI via Twine…")
+        os.system("twine upload dist/*")
 
-        self.status('Pushing git tags…')
-        os.system('git tag v{}'.format(about['__version__']))
-        os.system('git push --tags')
+        self.status("Pushing git tags…")
+        os.system("git tag v{}".format(about["__version__"]))
+        os.system("git push --tags")
 
         sys.exit()
 
 
 setup(
     name=NAME,
-    version=about['__version__'],
+    version=about["__version__"],
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type="text/markdown",
     author=AUTHOR,
     author_email=EMAIL,
-    license='MIT',
+    license="MIT",
     url=URL,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    keywords=['html', 'css', 'inline', 'style', 'email'],
+    keywords=["html", "css", "inline", "style", "email"],
     classifiers=[
         "Environment :: Other Environment",
         "Environment :: Web Environment",
@@ -132,6 +132,6 @@ setup(
     extras_require=EXTRAS,
     # $ setup.py upload support.
     cmdclass={
-        'upload': UploadCommand,
+        "upload": UploadCommand,
     },
 )
