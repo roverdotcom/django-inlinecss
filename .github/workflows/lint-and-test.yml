@@ -24,6 +24,9 @@ jobs:
           pip install -q Django==${{ matrix.django-version }}
           pip install -e .[flake8,tests]
 
+      - name: Add current directory to PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
       - name: Lint with flake8
         run: flake8
 
