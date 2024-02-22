@@ -1,6 +1,10 @@
 name: Run Tests and Linter
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - master
+      - main
 
 jobs:
   lint-and-test:
