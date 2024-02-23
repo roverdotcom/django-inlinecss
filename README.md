@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/roverdotcom/django-inlinecss.png?branch=master)](https://travis-ci.org/roverdotcom/django-inlinecss)
+[![Build Status](https://travis-ci.org/roverdotcom/django-inlinecss.svg?branch=master)](https://travis-ci.org/roverdotcom/django-inlinecss)
 
 ## About
 
@@ -14,8 +14,8 @@ template language.
 
 - BeautifulSoup
 - cssutils
-- Python 2.7+,3.4+
-- Django 1.11+
+- Python 3.8+
+- Django 3.2+
 
 
 #### Step 2: Install django_inlinecss

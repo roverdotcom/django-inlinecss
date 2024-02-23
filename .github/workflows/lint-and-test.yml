@@ -1,0 +1,40 @@
+name: Run Tests and Linter
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.8.18, 3.9.18, 3.10.13, 3.11.8]
+        django-version: [3.2, 4.2]
+
+    name: Lint and Test (Python ${{ matrix.python-version }} - Django ${{ matrix.django-version }})
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -q Django==${{ matrix.django-version }}
+          pip install -e .[flake8,tests]
+
+      - name: Add current directory to PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      - name: Lint with flake8
+        run: flake8
+
+      - name: Test with pytest
+        run: pytest
