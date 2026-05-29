@@ -1,7 +1,4 @@
-try:
-    import importlib
-except ImportError:
-    from django.utils import importlib
+import importlib
 
 DEFAULT_ENGINE = "django_inlinecss.engines.PynlinerEngine"
 DEFAULT_CSS_LOADER = "django_inlinecss.css_loaders.StaticfilesStorageCSSLoader"

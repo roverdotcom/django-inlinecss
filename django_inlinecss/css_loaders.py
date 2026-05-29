@@ -34,4 +34,5 @@ class StaticfilesStorageCSSLoader(BaseCSSLoader):
         """
         Retrieve CSS contents with staticfiles storage
         """
-        return staticfiles_storage.open(path).read().decode("utf-8")
+        with staticfiles_storage.open(path) as f:
+            return f.read().decode("utf-8")
