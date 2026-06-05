@@ -25,8 +25,6 @@ Add ```django_inlinecss``` to your ```settings.py```:
 ```python
 INSTALLED_APPS = (
         'django.contrib.auth',
-        'django.contrib.webdesign',
-        'django.contrib.contenttypes',
         '...',
         '...',
         '...',
